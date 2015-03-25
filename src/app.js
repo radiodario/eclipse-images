@@ -1,10 +1,12 @@
 var S3Upload = require('./s3upload');
+var uuid = require('node-uuid');
 
 function s3_upload(){
     var status_elem = document.getElementById("status");
     var url_elem = document.getElementById("pic_url");
     var preview_elem = document.getElementById("preview");
     var s3upload = new S3Upload({
+        s3_object_name: 'eclipse-images/'+uuid.v1(),
         file_dom_selector: 'files',
         s3_sign_put_url: '/sign_s3',
         onProgress: function(percent, message) {

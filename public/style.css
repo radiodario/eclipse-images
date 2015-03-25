@@ -67,14 +67,18 @@ h3 {
   font-family: Raleway;
   display: inline-block;
   position: relative;
-  line-height: 32px;
   font-weight: 500;
   border-radius: 5px;
-  padding: 10px 20px;
-  font-size: 20pt;
+  font-size: 12pt;
+  padding: 4px 8px;
   background-color: cyan;
   color: white;
   border: none;
+}
+.btn-large {
+  line-height: 32px;
+  padding: 10px 20px;
+  font-size: 20pt;
 }
 .shadow {
   -webkit-filter: drop-shadow(0px 0px 5px #ffffff);
@@ -83,21 +87,25 @@ h3 {
 }
 .custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
+  text-align: center;
 }
 .custom-file-input::before {
   content: 'Please select an image';
-  display: inline-block;
-  background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
-  border: 1px solid #999;
-  border-radius: 3px;
-  padding: 5px 8px;
-  outline: none;
-  white-space: nowrap;
-  -webkit-user-select: none;
+  width: 100%;
+  text-align: center;
+  margin: auto;
+  cursor: hand;
   cursor: pointer;
-  text-shadow: 1px 1px #fff;
-  font-weight: 700;
-  font-size: 10pt;
+  font-family: Raleway;
+  display: inline-block;
+  position: relative;
+  font-weight: 500;
+  border-radius: 5px;
+  font-size: 12pt;
+  padding: 4px 8px;
+  background-color: cyan;
+  color: white;
+  border: none;
 }
 .custom-file-input:hover::before {
   border-color: black;
