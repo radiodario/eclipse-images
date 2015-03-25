@@ -1,0 +1,30 @@
+<html>
+<body>
+
+<h1>Upload an Eclipse Image</h1>
+
+<hr />
+
+<h2>Your Image</h2>
+
+<input type="file" id="files"/>
+<p id="status">Please select a file</p>
+<div style="border:1px solid gray;width:300px;"  id="preview"><img src="/img/default.png" style="width:300px;" /></div>
+
+<h2>Your information</h2>
+
+<form method="POST" action="/submit_form/">
+    <input type="hidden" id="pic_url" name="pic_url" value="/public/images/default.png" />
+    <input type="text" name="title" placeholder="title" /><br />
+    <input type="text" name="email" placeholder="email" /><br /><br />
+
+    <hr />
+    <h2>upload pic</h2>
+
+    <input type="submit" value="Upload Pic" />
+</form>
+
+<script type="text/javascript" src="/js/s3upload.js"></script>
+<script type="text/javascript" src="/js/app.js"></script>
+</body>
+</html>
