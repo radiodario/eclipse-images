@@ -14,10 +14,8 @@ var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
 var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
 var S3_BUCKET = process.env.S3_BUCKET
 
-
-
-app.get('/account', function(req, res){
-    res.render('account.html');
+app.get('/upload', function(req, res){
+    res.render('upload.html');
 });
 
 app.get('/sign_s3', function(req, res){

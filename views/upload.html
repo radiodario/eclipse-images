@@ -1,30 +1,41 @@
-<html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.75">
+  <meta name="theme-color" content="#212b39">
+  <title>Eclipse Images</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
+<div id="container" class="cont">
+    <div class="logoholder center shadow">
+        <svg height="100" width="100">
+            <circle fill="#FFFFFF" cx="45.756" cy="49.532" r="37.243"/>
+            <path fill="#FFFFFF" d="M54.771,87.775c-20.528,0-37.229-17.221-37.229-38.388S34.243,11,54.771,11S92,28.221,92,49.388    S75.3,87.775,54.771,87.775z M54.771,13c-19.425,0-35.229,16.323-35.229,36.388s15.804,36.388,35.229,36.388    C74.196,85.775,90,69.452,90,49.388S74.196,13,54.771,13z"/>
+        </svg>
+    </g>
+    </div>
+    <div class="section center">
+        <h1>Upload an Eclipse Image</h1>
 
-<h1>Upload an Eclipse Image</h1>
+        <h2>Your Image</h2>
 
-<hr />
-
-<h2>Your Image</h2>
-
-<input type="file" id="files"/>
-<p id="status">Please select a file</p>
-<div style="border:1px solid gray;width:300px;"  id="preview"><img src="/img/default.png" style="width:300px;" /></div>
-
-<h2>Your information</h2>
-
-<form method="POST" action="/submit_form/">
-    <input type="hidden" id="pic_url" name="pic_url" value="/public/images/default.png" />
-    <input type="text" name="title" placeholder="title" /><br />
-    <input type="text" name="email" placeholder="email" /><br /><br />
-
-    <hr />
-    <h2>upload pic</h2>
-
-    <input type="submit" value="Upload Pic" />
-</form>
-
-<script type="text/javascript" src="/js/s3upload.js"></script>
+        <div id="preview"><img src="/img/default.png" style="width:300px;" /></div>
+        <div id="selectwrapper">
+            <p id="status"></p>
+            <p>
+                <input type="file" id="files" class="custom-file-input"/>
+            </p>
+        </div>
+        <form method="POST" action="/submit_form/">
+            <input type="hidden" id="pic_url" name="pic_url" value="/img/default.png" />
+            <input type="text" name="title" placeholder="title" /><br />
+            <input type="text" name="email" placeholder="email" /><br /><br />
+            <input type="submit" class="btn" value="Submit Picture" />
+        </form>
+    </div>
+</div>
 <script type="text/javascript" src="/js/app.js"></script>
 </body>
 </html>

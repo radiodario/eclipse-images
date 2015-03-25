@@ -1,33 +1,3 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var S3Upload = require('./s3upload');
-
-function s3_upload(){
-    var status_elem = document.getElementById("status");
-    var url_elem = document.getElementById("pic_url");
-    var preview_elem = document.getElementById("preview");
-    var s3upload = new S3Upload({
-        file_dom_selector: 'files',
-        s3_sign_put_url: '/sign_s3',
-        onProgress: function(percent, message) {
-            status_elem.innerHTML = 'Upload progress: ' + percent + '% ' + message;
-        },
-        onFinishS3Put: function(public_url) {
-            status_elem.innerHTML = 'Upload completed. Uploaded to: '+ public_url;
-            url_elem.value = public_url;
-            preview_elem.innerHTML = '<img src="'+public_url+'" style="width:300px;" />';
-        },
-        onError: function(status) {
-            status_elem.innerHTML = 'Upload error: ' + status;
-        }
-    });
-}
-
-(function() {
-    var input_element = document.getElementById("files");
-    input_element.onchange = s3_upload;
-})();
-
-},{"./s3upload":2}],2:[function(require,module,exports){
 
 
 module.exports = (function() {
@@ -151,6 +121,3 @@ module.exports = (function() {
 
 })();
 
-
-
-},{}]},{},[1,2]);
