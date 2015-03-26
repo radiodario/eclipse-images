@@ -7,7 +7,9 @@
     "ejs": "^2.3.1",
     "express": "^4.12.3",
     "firebase": "^2.2.3",
-    "node-uuid": "^1.4.3"
+    "node-uuid": "^1.4.3",
+    "react": "^0.13.1",
+    "react-router": "^0.13.2"
   },
   "devDependencies": {
     "browserify": "^9.0.3",

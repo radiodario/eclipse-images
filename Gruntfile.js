@@ -12,7 +12,7 @@ module.exports = function(grunt) {
         dest: distFolder+'/js/app.js'
       },
       options: {
-        // transform: []
+        transform: ['reactify']
       }
     },
 
