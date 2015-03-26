@@ -1,18 +1,29 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var http = require('http');
 var path = require('path');
 var aws = require('aws-sdk');
+var Firebase = require('firebase');
+
 
 var app = express();
+app.set('port', process.env.PORT || 5000);
+
 app.set('views', __dirname + '/views');
 app.engine('html', require('ejs').renderFile);
 
-app.set('port', process.env.PORT || 5000);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
 var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
-var S3_BUCKET = process.env.S3_BUCKET
+var S3_BUCKET = process.env.S3_BUCKET;
+var FIREBASE_URL = process.env.FIREBASE_URL;
+
+var eclipsePicsStore = new Firebase(FIREBASE_URL);
+
 
 app.get('/upload', function(req, res){
     res.render('upload.html');
@@ -47,13 +58,20 @@ app.post('/submit_form', function(req, res){
     title = req.body.title;
     email = req.body.email;
     pic_url = req.body.pic_url;
-    update_pic(title, email, pic_url);
+    var picObject = {
+      title:title,
+      email:email,
+      picUrl:pic_url
+    };
+    var ref = eclipsePicsStore.push(picObject, function onComplete(err) {
+      if (err) {
+        req.status(500);
+      }
+      var key = ref.key();
+      res.redirect('/view/'+key);
+    });
 });
 
 
 app.listen(app.get('port'));
 
-
-function update_pic(title, email, pic_url) {
-  // TODO: fill this in
-}
