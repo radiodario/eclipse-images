@@ -1,7 +1,13 @@
+var React = require('react');
+var {Link, RouteHandler, Navigation } = require('react-router');
 var S3Upload = require('../utils/s3upload');
 var uuid = require('node-uuid');
 
-module.exports = function s3_upload(){
+var Upload = React.createClass({
+
+  mixins: [Navigation],
+
+  handleUpload: function() {
     var status_elem = document.getElementById("status");
     var url_elem = document.getElementById("pic_url");
     var preview_elem = document.getElementById("preview");
@@ -21,4 +27,33 @@ module.exports = function s3_upload(){
             status_elem.innerHTML = 'Upload error: ' + status;
         }
     });
-}
+  },
+
+  render: function() {
+    return (
+      <div className="section center">
+        <h1>Upload your Image of the Eclipse</h1>
+
+        <div id="preview">
+          <img src="/img/default.png" style={{width:300}} />
+        </div>
+        <div id="selectwrapper">
+            <p id="status"></p>
+            <p>
+              <input type="file" id="files" className="custom-file-input" onChange={this.handleUpload}/>
+            </p>
+        </div>
+        <form method="POST" action="/submit_form/">
+            <input type="hidden" id="pic_url" name="pic_url" value="/img/default.png" />
+            <input type="text" name="title" placeholder="title" /><br />
+            <input type="text" name="email" placeholder="email" /><br /><br />
+            <input type="submit" className="btn" value="Submit Picture" />
+        </form>
+      </div>
+    );
+  }
+
+});
+
+
+module.exports = Upload;

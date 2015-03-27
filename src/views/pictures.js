@@ -41,7 +41,18 @@ var Pictures = React.createClass({
   render () {
     var pictures = this.state.pictures.map(this.renderPicture);
 
-    return <div>{pictures}</div>;
+    return (
+      <div>
+        <div className="picture-gallery">
+          {pictures}
+        </div>
+        <div className="center">
+          <Link className="btn" to="upload">
+            Upload your Picture
+          </Link>
+        </div>
+      </div>
+    );
   }
 
 });

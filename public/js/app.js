@@ -23458,7 +23458,18 @@ var Pictures = React.createClass({displayName: "Pictures",
   render:function () {
     var pictures = this.state.pictures.map(this.renderPicture);
 
-    return React.createElement("div", null, pictures);
+    return (
+      React.createElement("div", null, 
+        React.createElement("div", {className: "picture-gallery"}, 
+          pictures
+        ), 
+        React.createElement("div", {className: "center"}, 
+          React.createElement(Link, {className: "btn", to: "upload"}, 
+            "Upload your Picture"
+          )
+        )
+      )
+    );
   }
 
 });
@@ -23467,10 +23478,16 @@ module.exports = Pictures;
 
 
 },{"firebase":1,"react":197,"react-router":28}],202:[function(require,module,exports){
+var React = require('react');
+var $__0=     require('react-router'),Link=$__0.Link,RouteHandler=$__0.RouteHandler,Navigation=$__0.Navigation;
 var S3Upload = require('../utils/s3upload');
 var uuid = require('node-uuid');
 
-module.exports = function s3_upload(){
+var Upload = React.createClass({displayName: "Upload",
+
+  mixins: [Navigation],
+
+  handleUpload: function() {
     var status_elem = document.getElementById("status");
     var url_elem = document.getElementById("pic_url");
     var preview_elem = document.getElementById("preview");
@@ -23490,8 +23507,36 @@ module.exports = function s3_upload(){
             status_elem.innerHTML = 'Upload error: ' + status;
         }
     });
-}
+  },
+
+  render: function() {
+    return (
+      React.createElement("div", {className: "section center"}, 
+        React.createElement("h1", null, "Upload your Image of the Eclipse"), 
+
+        React.createElement("div", {id: "preview"}, 
+          React.createElement("img", {src: "/img/default.png", style: {width:300}})
+        ), 
+        React.createElement("div", {id: "selectwrapper"}, 
+            React.createElement("p", {id: "status"}), 
+            React.createElement("p", null, 
+              React.createElement("input", {type: "file", id: "files", className: "custom-file-input", onChange: this.handleUpload})
+            )
+        ), 
+        React.createElement("form", {method: "POST", action: "/submit_form/"}, 
+            React.createElement("input", {type: "hidden", id: "pic_url", name: "pic_url", value: "/img/default.png"}), 
+            React.createElement("input", {type: "text", name: "title", placeholder: "title"}), React.createElement("br", null), 
+            React.createElement("input", {type: "text", name: "email", placeholder: "email"}), React.createElement("br", null), React.createElement("br", null), 
+            React.createElement("input", {type: "submit", className: "btn", value: "Submit Picture"})
+        )
+      )
+    );
+  }
+
+});
 
 
+module.exports = Upload;
 
-},{"../utils/s3upload":199,"node-uuid":3}]},{},[198,199,200,201,202]);
+
+},{"../utils/s3upload":199,"node-uuid":3,"react":197,"react-router":28}]},{},[198,199,200,201,202]);
