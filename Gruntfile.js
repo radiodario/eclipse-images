@@ -6,6 +6,18 @@ module.exports = function(grunt) {
 
     clean: [distFolder],
 
+    ejs: {
+      all: {
+        options: {
+          // site-wide vars here
+        },
+        src: ['**/*.ejs', '!node_modules/**/*', '!_*/**/*'],
+        dest: distFolder + '/',
+        expand: true,
+        ext: '.html',
+      },
+    },
+
     browserify: {
       all: {
         src: 'src/**/*.js',
@@ -35,10 +47,10 @@ module.exports = function(grunt) {
         livereload: true
       },
 
-      // html: {
-      //   files: '<%= ejs.all.src %>',
-      //   tasks: ['ejs'],
-      // },
+      html: {
+        files: '<%= ejs.all.src %>',
+        tasks: ['ejs'],
+      },
 
       js: {
         files: '<%= browserify.all.src %>',
@@ -60,7 +72,7 @@ module.exports = function(grunt) {
 
   require('matchdep').filterDev('grunt-*').forEach(grunt.loadNpmTasks);
 
-  grunt.registerTask('default', ['clean', 'less', 'browserify', 'copy']);
+  grunt.registerTask('default', ['clean', 'ejs', 'less', 'browserify', 'copy']);
 
   grunt.registerTask('server', ['default', 'watch']);
 
