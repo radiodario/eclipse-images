@@ -63,7 +63,7 @@ app.post('/submit_form', function(req, res){
         req.status(500);
       }
       var key = ref.key();
-      res.redirect('/view/'+key);
+      res.redirect('/');
     });
 });
 
