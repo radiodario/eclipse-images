@@ -75,6 +75,9 @@ h3 {
   color: white;
   border: none;
 }
+a.btn {
+  text-decoration: none;
+}
 .btn-large {
   line-height: 32px;
   padding: 10px 20px;
