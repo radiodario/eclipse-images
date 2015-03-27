@@ -24,11 +24,6 @@ var FIREBASE_URL = process.env.FIREBASE_URL;
 
 var eclipsePicsStore = new Firebase(FIREBASE_URL);
 
-
-app.get('/upload', function(req, res){
-    res.render('upload.html');
-});
-
 app.get('/sign_s3', function(req, res){
     aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
     var s3 = new aws.S3();
