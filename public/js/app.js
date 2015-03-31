@@ -23312,7 +23312,8 @@ module.exports = (function() {
     var this_s3upload, xhr;
     this_s3upload = this;
     xhr = new XMLHttpRequest();
-    xhr.open('GET', this.s3_sign_put_url + '?s3_object_type=' + file.type + '&s3_object_name=' + this.s3_object_name, true);
+    var extension = file.name.split('.').pop();
+    xhr.open('GET', this.s3_sign_put_url + '?s3_object_type=' + file.type + '&s3_object_name=' + this.s3_object_name + '.' + extension, true);
     xhr.overrideMimeType('text/plain; charset=x-user-defined');
     xhr.onreadystatechange = function(e) {
       var result;
@@ -23440,16 +23441,24 @@ var Pictures = React.createClass({displayName: "Pictures",
     }.bind(this));
   },
 
+  generateThumbUrl: function generateThumbUrl(url) {
+    var extension = url.split('.').pop();
+    var thumbUrl = url.split('.'+extension)[0]+'_thumb.jpg';
+
+    return thumbUrl;
+  },
+
   renderPicture:function (picture) {
     var styles = {
       display: 'inline-block',
       margin: IMAGE_MARGIN
     };
+
     return (
       React.createElement("div", {style: styles, key: picture.id}, 
         React.createElement(Link, {to: "picture", params: {id: picture.id}}, 
           React.createElement("img", {style: {height: IMAGE_SIZE, width: IMAGE_SIZE}, 
-            src: picture.picUrl})
+            src: this.generateThumbUrl(picture.picUrl)})
         )
       )
     );

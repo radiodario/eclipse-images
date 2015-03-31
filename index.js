@@ -4,7 +4,7 @@ var http = require('http');
 var path = require('path');
 var aws = require('aws-sdk');
 var Firebase = require('firebase');
-
+var ThumbClient = require('thumbd').Client;
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -17,12 +17,24 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
+
 var AWS_ACCESS_KEY = process.env.AWS_ACCESS_KEY;
 var AWS_SECRET_KEY = process.env.AWS_SECRET_KEY;
+var AWS_REGION = process.env.AWS_REGION;
 var S3_BUCKET = process.env.S3_BUCKET;
+var SQS_QUEUE = process.env.SQS_QUEUE;
 var FIREBASE_URL = process.env.FIREBASE_URL;
 
 var eclipsePicsStore = new Firebase(FIREBASE_URL);
+
+var thumbClient = new ThumbClient({
+    awsKey: AWS_ACCESS_KEY,
+    awsSecret: AWS_SECRET_KEY,
+    awsRegion: AWS_REGION,
+    sqsQueue: SQS_QUEUE,
+    s3Bucket: S3_BUCKET,
+});
+
 
 app.get('/sign_s3', function(req, res){
     aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
@@ -50,9 +62,20 @@ app.get('/sign_s3', function(req, res){
 });
 
 app.post('/submit_form', function(req, res){
-    title = req.body.title;
-    email = req.body.email;
-    pic_url = req.body.pic_url;
+    var title = req.body.title;
+    var email = req.body.email;
+    var pic_url = req.body.pic_url;
+    var s3_url = pic_url.replace('https://'+S3_BUCKET+'.s3.amazonaws.com/', '');
+    thumbClient.thumbnail(s3_url, [{
+            suffix: 'thumb',
+            width: 150,
+            height: 150,
+            background: 'red',
+            strategy: 'fill'
+        }], {
+        // notify: 'https://callback.example.com', // optional web-hook when processing is done.
+        // prefix: 'foobar' // optional prefix for thumbnails created.
+    });
     var picObject = {
       title:title,
       email:email,

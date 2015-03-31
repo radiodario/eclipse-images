@@ -23,16 +23,24 @@ var Pictures = React.createClass({
     });
   },
 
+  generateThumbUrl: function generateThumbUrl(url) {
+    var extension = url.split('.').pop();
+    var thumbUrl = url.split('.'+extension)[0]+'_thumb.jpg';
+
+    return thumbUrl;
+  },
+
   renderPicture (picture) {
     var styles = {
       display: 'inline-block',
       margin: IMAGE_MARGIN
     };
+
     return (
       <div style={styles} key={picture.id}>
         <Link to="picture" params={{id: picture.id}}>
           <img style={{height: IMAGE_SIZE, width: IMAGE_SIZE}}
-            src={picture.picUrl}/>
+            src={this.generateThumbUrl(picture.picUrl)}/>
         </Link>
       </div>
     );
