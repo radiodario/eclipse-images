@@ -23492,7 +23492,12 @@ var Pictures = React.createClass({displayName: "Pictures",
 
   calcRowWidth:function () {
     var fullWidth = IMAGE_SIZE + (IMAGE_MARGIN * 2);
-    return this.calcPicturesPerRow() * fullWidth;
+    var picsPerRow = this.calcPicturesPerRow();
+    var numberOfPics = this.state.pictures.length;
+    if (numberOfPics < picsPerRow) {
+      return numberOfPics * fullWidth;
+    }
+    return picsPerRow * fullWidth;
   },
 
   calcRows:function () {
