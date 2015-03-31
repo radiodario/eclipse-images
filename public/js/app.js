@@ -23435,15 +23435,21 @@ var Pictures = React.createClass({displayName: "Pictures",
     }
   },
 
+  handleResize:function () {
+    this.setState({ viewportWidth: window.innerWidth })
+  },
+
   componentWillMount:function () {
     this.picStore = new Firebase('https://eclipse-pics.firebaseio.com/');
     this.picStore.on('value', function(picsObject)  {
       var pictures = this._toArray(picsObject.val());
       this.setState({pictures: pictures});
     }.bind(this));
-    window.addEventListener('resize', function()  {
-      this.setState({ viewportWidth: window.innerWidth })
-    }.bind(this));
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  componentWillUnmount:function () {
+    window.removeEventListener('resize', this.handleResize);
   },
 
   /* Returns true if the inputted object is a JavaScript array */

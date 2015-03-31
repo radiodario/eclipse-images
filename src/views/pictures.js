@@ -15,15 +15,21 @@ var Pictures = React.createClass({
     }
   },
 
+  handleResize () {
+    this.setState({ viewportWidth: window.innerWidth })
+  },
+
   componentWillMount () {
     this.picStore = new Firebase('https://eclipse-pics.firebaseio.com/');
     this.picStore.on('value', (picsObject) => {
       var pictures = this._toArray(picsObject.val());
       this.setState({pictures: pictures});
     });
-    window.addEventListener('resize', () => {
-      this.setState({ viewportWidth: window.innerWidth })
-    });
+    window.addEventListener('resize', this.handleResize);
+  },
+
+  componentWillUnmount () {
+    window.removeEventListener('resize', this.handleResize);
   },
 
   /* Returns true if the inputted object is a JavaScript array */
