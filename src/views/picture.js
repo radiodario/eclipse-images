@@ -21,8 +21,8 @@ var Picture = React.createClass({
 
   render () {
     return (
-      <div className="picturePage">
-        <img src={this.state.picture.picUrl}/>
+      <div className="picture-page">
+        <img src={this.state.picture.picUrl} style={{"max-width": '90vw'}}/>
       </div>
       );
   }

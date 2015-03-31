@@ -57,6 +57,12 @@ body {
 .logoholder {
   padding-top: 2em;
 }
+.picture-page {
+  text-align: center;
+}
+.picture-page img {
+  margin: auto;
+}
 h1,
 h2,
 h3 {
@@ -81,6 +87,15 @@ h3 {
 }
 a.btn {
   text-decoration: none;
+}
+a.home-link {
+  text-decoration: none;
+}
+a.home-link h1,
+a.home-link h2,
+a.home-link h3 {
+  text-decoration: none;
+  color: white;
 }
 .btn-large {
   line-height: 32px;

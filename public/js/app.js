@@ -23216,7 +23216,7 @@ var Pictures = require('./views/pictures');
 var Picture = require('./views/picture');
 var Upload = require('./views/upload');
 
-var $__0=     Router,Route=$__0.Route,RouteHandler=$__0.RouteHandler;
+var $__0=      Router,Route=$__0.Route,RouteHandler=$__0.RouteHandler,Link=$__0.Link;
 
 
 var App = React.createClass({displayName: "App",
@@ -23225,11 +23225,13 @@ var App = React.createClass({displayName: "App",
     return (
       React.createElement("div", null, 
         React.createElement("div", {className: "logoholder center shadow"}, 
-          React.createElement("svg", {height: "100", width: "100"}, 
-            React.createElement("circle", {fill: "#FFFFFF", cx: "45.756", cy: "49.532", r: "37.243"}), 
-            React.createElement("path", {fill: "#FFFFFF", d: "M54.771,87.775c-20.528,0-37.229-17.221-37.229-38.388S34.243,11,54.771,11S92,28.221,92,49.388    S75.3,87.775,54.771,87.775z M54.771,13c-19.425,0-35.229,16.323-35.229,36.388s15.804,36.388,35.229,36.388    C74.196,85.775,90,69.452,90,49.388S74.196,13,54.771,13z"})
-          ), 
-          React.createElement("h2", {className: "tagline"}, "Eclipse Pics")
+          React.createElement(Link, {className: "home-link", to: "pictures"}, 
+            React.createElement("svg", {height: "100", width: "100"}, 
+              React.createElement("circle", {fill: "#FFFFFF", cx: "45.756", cy: "49.532", r: "37.243"}), 
+              React.createElement("path", {fill: "#FFFFFF", d: "M54.771,87.775c-20.528,0-37.229-17.221-37.229-38.388S34.243,11,54.771,11S92,28.221,92,49.388    S75.3,87.775,54.771,87.775z M54.771,13c-19.425,0-35.229,16.323-35.229,36.388s15.804,36.388,35.229,36.388    C74.196,85.775,90,69.452,90,49.388S74.196,13,54.771,13z"})
+            ), 
+            React.createElement("h2", {className: "tagline"}, "Eclipse Pics")
+          )
         ), 
 
         React.createElement(RouteHandler, React.__spread({},  this.props))
@@ -23404,8 +23406,8 @@ var Picture = React.createClass({displayName: "Picture",
 
   render:function () {
     return (
-      React.createElement("div", {className: "picturePage"}, 
-        React.createElement("img", {src: this.state.picture.picUrl})
+      React.createElement("div", {className: "picture-page"}, 
+        React.createElement("img", {src: this.state.picture.picUrl, style: {"max-width": '90vw'}})
       )
       );
   }
