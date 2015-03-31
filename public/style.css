@@ -41,10 +41,14 @@ body {
   background: linear-gradient(to bottom, #181f29 0%, #000000 100%);
   /* W3C */
 }
+.picture-gallery {
+  margin: auto;
+  left: 0;
+  right: 0;
+}
 .cont {
   margin: auto;
   position: relative;
-  max-width: 980px;
   height: 100%;
 }
 .center {

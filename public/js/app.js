@@ -23218,7 +23218,9 @@ var Upload = require('./views/upload');
 
 var $__0=     Router,Route=$__0.Route,RouteHandler=$__0.RouteHandler;
 
+
 var App = React.createClass({displayName: "App",
+
   render: function() {
     return (
       React.createElement("div", null, 
@@ -23419,33 +23421,80 @@ module.exports = Picture;
 var React = require('react');
 var $__0=      require('react-router'),Link=$__0.Link,RouteHandler=$__0.RouteHandler,Navigation=$__0.Navigation;
 var Firebase = require('firebase');
-
 var IMAGE_SIZE = 150;
 var IMAGE_MARGIN = 10;
 
 var Pictures = React.createClass({displayName: "Pictures",
   mixins : [Navigation],
 
-  getInitialState:function() {
+  getInitialState:function () {
     return {
+      viewportWidth: window.innerWidth,
+      lastChildId: null,
       pictures: []
     }
   },
 
   componentWillMount:function () {
     this.picStore = new Firebase('https://eclipse-pics.firebaseio.com/');
-    this.picStore.on('child_added', function(child)  {
-      var picture = child.val();
-      picture.id = child.key();
-      this.setState({pictures: this.state.pictures.concat([picture])});
+    this.picStore.on('value', function(picsObject)  {
+      var pictures = this._toArray(picsObject.val());
+      this.setState({pictures: pictures});
+    }.bind(this));
+    window.addEventListener('resize', function()  {
+      this.setState({ viewportWidth: window.innerWidth })
     }.bind(this));
   },
 
-  generateThumbUrl: function generateThumbUrl(url) {
+  /* Returns true if the inputted object is a JavaScript array */
+  _isArray:function (obj) {
+    return (Object.prototype.toString.call(obj) === "[object Array]");
+  },
+
+  /* Converts a Firebase object to a JavaScript array */
+  _toArray:function (obj) {
+    var out = [];
+    if (obj) {
+      if (this._isArray(obj)) {
+        out = obj;
+      }
+      else if (typeof(obj) === "object") {
+        for (var key in obj) {
+          if (obj.hasOwnProperty(key)) {
+            obj[key].id = key;
+            out.push(obj[key]);
+          }
+        }
+      }
+    }
+    return out;
+  },
+
+  generateThumbUrl:function (url) {
     var extension = url.split('.').pop();
     var thumbUrl = url.split('.'+extension)[0]+'_thumb.jpg';
 
     return thumbUrl;
+  },
+
+  calcPicturesPerRow:function () {
+    var fullWidth = IMAGE_SIZE + (IMAGE_MARGIN * 2);
+    return Math.floor(this.state.viewportWidth / fullWidth);
+  },
+
+  calcRowWidth:function () {
+    var fullWidth = IMAGE_SIZE + (IMAGE_MARGIN * 2);
+    return this.calcPicturesPerRow() * fullWidth;
+  },
+
+  calcRows:function () {
+    var picsPerRow = this.calcPicturesPerRow();
+    return this.state.pictures.reduce(function(rows, picture, index)  {
+      if (index % picsPerRow === 0)
+        rows.push([]);
+      rows[rows.length - 1].push(picture);
+      return rows
+    }, [[]]);
   },
 
   renderPicture:function (picture) {
@@ -23464,12 +23513,20 @@ var Pictures = React.createClass({displayName: "Pictures",
     );
   },
 
-  render:function () {
-    var pictures = this.state.pictures.map(this.renderPicture);
+  renderRow:function (row, index) {
+    return (
+      React.createElement("div", {key: index}, 
+        row.map(this.renderPicture)
+      )
+    )
+  },
 
+  render:function () {
+    var pictures = this.calcRows().map(this.renderRow);
+    var rowWidth = this.calcRowWidth();
     return (
       React.createElement("div", null, 
-        React.createElement("div", {className: "picture-gallery"}, 
+        React.createElement("div", {className: "picture-gallery", style: {width: rowWidth}}, 
           pictures
         ), 
         React.createElement("div", {className: "center"}, 

@@ -6,7 +6,9 @@ var Upload = require('./views/upload');
 
 var { Route, RouteHandler } = Router;
 
+
 var App = React.createClass({
+
   render: function() {
     return (
       <div>
