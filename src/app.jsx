@@ -1,11 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
-var Pictures = require('./views/pictures');
-var Picture = require('./views/picture');
-var Upload = require('./views/upload');
 
-var { Route, RouteHandler, Link } = Router;
-
+var { RouteHandler, Link } = Router;
 
 var App = React.createClass({
 
@@ -29,14 +25,5 @@ var App = React.createClass({
 });
 
 
-var routes = (
-  <Route handler={App}>
-    <Route name="pictures" path="/" handler={Pictures}/>
-    <Route name="picture" path="picture/:id" handler={Picture}/>
-  // <Route name="upload" path="/upload" handler={Upload}/>
-  </Route>
-);
+module.exports = App;
 
-Router.run(routes, function (Handler, state) {
-  React.render(<Handler {...state}/>, document.getElementById('container'));
-});

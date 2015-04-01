@@ -23212,12 +23212,8 @@ module.exports = require('./lib/React');
 },{"./lib/React":70}],198:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
-var Pictures = require('./views/pictures');
-var Picture = require('./views/picture');
-var Upload = require('./views/upload');
 
-var $__0=      Router,Route=$__0.Route,RouteHandler=$__0.RouteHandler,Link=$__0.Link;
-
+var $__0=     Router,RouteHandler=$__0.RouteHandler,Link=$__0.Link;
 
 var App = React.createClass({displayName: "App",
 
@@ -23241,6 +23237,34 @@ var App = React.createClass({displayName: "App",
 });
 
 
+module.exports = App;
+
+
+
+
+},{"react":197,"react-router":28}],199:[function(require,module,exports){
+
+var React = require('react');
+var Router = require('react-router');
+var routes = require('./routes.jsx');
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  Router.run(routes, Router.HistoryLocation, function (Handler, state) {
+    React.render(React.createElement(Handler, React.__spread({},  state)), document.getElementById('container'));
+  });
+});
+
+
+},{"./routes.jsx":200,"react":197,"react-router":28}],200:[function(require,module,exports){
+var React = require('react');
+var Router = require('react-router');
+var $__0=    Router,Route=$__0.Route;
+
+var Pictures = require('./views/pictures.jsx');
+var Picture = require('./views/picture.jsx');
+var Upload = require('./views/upload.jsx');
+var App = require('./app.jsx');
+
 var routes = (
   React.createElement(Route, {handler: App}, 
     React.createElement(Route, {name: "pictures", path: "/", handler: Pictures}), 
@@ -23249,12 +23273,59 @@ var routes = (
   )
 );
 
-Router.run(routes, function (Handler, state) {
-  React.render(React.createElement(Handler, React.__spread({},  state)), document.getElementById('container'));
+module.exports = routes;
+
+
+},{"./app.jsx":198,"./views/picture.jsx":204,"./views/pictures.jsx":205,"./views/upload.jsx":206,"react":197,"react-router":28}],201:[function(require,module,exports){
+var React         = require('react');
+var Router        = require('react-router');
+// var DocumentTitle = require('react-document-title');
+
+var routes = require('./routes.jsx');
+var Html   = require('./utils/html.jsx');
+
+module.exports = function (req, res, next) {
+  Router.run(routes, req.url, function (Handler, state) {
+
+    // var title  = DocumentTitle.rewind();
+    var markup = React.renderToString(React.createElement(Handler, React.__spread({},  state)));
+    var html   = React.renderToStaticMarkup(React.createElement(Html, {markup: markup}));
+
+    // TODO: send 404 status code
+    // (see: https://github.com/gpbl/isomorphic-react-template/issues/3)
+    res.send('<!DOCTYPE html>' + html);
+  });
+};
+
+
+},{"./routes.jsx":200,"./utils/html.jsx":202,"react":197,"react-router":28}],202:[function(require,module,exports){
+var React = require('react');
+
+// Handle the HTML rendering on the server
+var Html = React.createClass({displayName: "Html",
+render: function() {
+  return (
+      React.createElement("html", {lang: "en"}, 
+        React.createElement("head", null, 
+          React.createElement("meta", {charset: "utf-8"}), 
+          React.createElement("meta", {name: "viewport", content: "width=device-width, initial-scale=0.75"}), 
+          React.createElement("meta", {name: "theme-color", content: "#212b39"}), 
+          React.createElement("title", null, "Eclipse Images"), 
+          React.createElement("link", {rel: "stylesheet", href: "/style.css"})
+        ), 
+        React.createElement("body", null, 
+          React.createElement("div", {id: "container", className: "cont", dangerouslySetInnerHTML: {__html: this.props.markup}}), 
+          React.createElement("script", {type: "text/javascript", src: "/js/app.js"})
+        )
+      )
+  );
+}
 });
 
+module.exports = Html;
 
-},{"./views/picture":200,"./views/pictures":201,"./views/upload":202,"react":197,"react-router":28}],199:[function(require,module,exports){
+
+},{"react":197}],203:[function(require,module,exports){
 
 
 module.exports = (function() {
@@ -23382,7 +23453,7 @@ module.exports = (function() {
 
 
 
-},{}],200:[function(require,module,exports){
+},{}],204:[function(require,module,exports){
 var React = require('react');
 var $__0=     require('react-router'),Link=$__0.Link,RouteHandler=$__0.RouteHandler,Navigation=$__0.Navigation;
 var Firebase = require('firebase');
@@ -23397,17 +23468,17 @@ var Picture = React.createClass({displayName: "Picture",
     }
   },
 
-  componentWillMount:function () {
+  componentDidMount:function () {
     this.pic = new Firebase('http://eclipse-pics.firebaseio.com/' + this.props.params.id);
-    this.pic.on('value', function(snapshot) {
+    this.pic.on('value', function(snapshot)  {
       this.setState({picture: snapshot.val()})
-    }.bind(this))
+    }.bind(this));
   },
 
   render:function () {
     return (
       React.createElement("div", {className: "picture-page"}, 
-        React.createElement("img", {src: this.state.picture.picUrl, style: {"max-width": '90vw'}})
+        React.createElement("img", {src: this.state.picture.picUrl, style: {maxWidth: '90vw'}})
       )
       );
   }
@@ -23419,7 +23490,7 @@ var Picture = React.createClass({displayName: "Picture",
 module.exports = Picture;
 
 
-},{"firebase":1,"react":197,"react-router":28}],201:[function(require,module,exports){
+},{"firebase":1,"react":197,"react-router":28}],205:[function(require,module,exports){
 var React = require('react');
 var $__0=      require('react-router'),Link=$__0.Link,RouteHandler=$__0.RouteHandler,Navigation=$__0.Navigation;
 var Firebase = require('firebase');
@@ -23556,7 +23627,7 @@ var Pictures = React.createClass({displayName: "Pictures",
 module.exports = Pictures;
 
 
-},{"firebase":1,"react":197,"react-router":28}],202:[function(require,module,exports){
+},{"firebase":1,"react":197,"react-router":28}],206:[function(require,module,exports){
 var React = require('react');
 var $__0=     require('react-router'),Link=$__0.Link,RouteHandler=$__0.RouteHandler,Navigation=$__0.Navigation;
 var S3Upload = require('../utils/s3upload');
@@ -23618,4 +23689,4 @@ var Upload = React.createClass({displayName: "Upload",
 module.exports = Upload;
 
 
-},{"../utils/s3upload":199,"node-uuid":3,"react":197,"react-router":28}]},{},[198,199,200,201,202]);
+},{"../utils/s3upload":203,"node-uuid":3,"react":197,"react-router":28}]},{},[198,199,200,201,202,204,205,206]);

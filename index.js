@@ -1,3 +1,8 @@
+require('node-jsx').install({
+    extension: '.jsx',
+    harmony: true
+});
+
 var express = require('express');
 var bodyParser = require('body-parser');
 var http = require('http');
@@ -5,6 +10,8 @@ var path = require('path');
 var aws = require('aws-sdk');
 var Firebase = require('firebase');
 var ThumbClient = require('thumbd').Client;
+
+var serverRender = require('./src/server.jsx');
 
 var app = express();
 app.set('port', process.env.PORT || 5000);
@@ -35,6 +42,7 @@ var thumbClient = new ThumbClient({
     s3Bucket: S3_BUCKET,
 });
 
+app.use('/', serverRender);
 
 app.get('/sign_s3', function(req, res){
     aws.config.update({accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY});
@@ -75,18 +83,19 @@ app.post('/submit_form', function(req, res){
         }], {
         // notify: 'https://callback.example.com', // optional web-hook when processing is done.
         // prefix: 'foobar' // optional prefix for thumbnails created.
-    });
-    var picObject = {
-      title:title,
-      email:email,
-      picUrl:pic_url
-    };
-    var ref = eclipsePicsStore.push(picObject, function onComplete(err) {
-      if (err) {
-        req.status(500);
-      }
-      var key = ref.key();
-      res.redirect('/');
+    }, function() {
+        var picObject = {
+          title:title,
+          email:email,
+          picUrl:pic_url
+        };
+        var ref = eclipsePicsStore.push(picObject, function onComplete(err) {
+          if (err) {
+            req.status(500);
+          }
+          var key = ref.key();
+          res.redirect('/');
+        });
     });
 });
 
